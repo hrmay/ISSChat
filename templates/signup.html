@@ -1,0 +1,66 @@
+<!doctype html>
+<html ng-app="ISSChatApp">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Space</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+    <script src="js/controller.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0-beta.2/angular-sanitize.js" charset="utf-8"></script>
+    
+  </head>
+  <body>
+    <div class="container" ng-controller="ChatController">
+
+    <div class="wrapper" >
+      <header>
+        {% if user != '' %}
+        <p>You're already signed in!</p>
+        <!--form action="/">
+          <input type="submit" value="Return">
+        </form-->
+        <button onclick="location.href='/'">
+           Return</button>
+        {% elif menu == 'signup' %}
+      
+          <h1>Signup</h1>
+          <form method="POST" action="/signup">
+          <p>Register for the chat!</p>
+          <p>Name: <br>
+            <input type="text" name="username" ng-model="name" placeholder="Username" size="14" /></p>
+          <p>Password: <br>
+            <input type="password" name="password" ng-model="password" placeholder="Password" size="14" /></p>
+          <p>Confirm Password: <br>
+            <input type="password" name="confirm" ng-model="confirm password" placeholder="Confirm Password" size="14" /></p>
+            
+            
+            <input type="submit"  value="Register" >
+          </form>
+        {% elif menu == 'failed' %}
+          <p>Signup failed!</p>
+          <button onclick="location.href='/signup'">
+             Return to Signup</button>
+        {% elif menu == 'mismatch' %}
+          <p>Passwords didn't match!</p>
+          <button onclick="location.href='/signup'">
+             Return to Signup</button>
+        {% elif menu == 'success' %}
+          <p>Signup succeeded!</p>
+          <button onclick="location.href='/'">
+             Return</button>
+        {% elif menu == 'exists' %}
+          <p>A user with that username already exists!</p>
+          <button onclick="location.href='/signup'">
+             Return to Signup</button>
+        {% endif %}
+      </header>
+    </div>
+    <script src="js/scale.fix.js"></script>
+    </div>
+  </body>
+</html>

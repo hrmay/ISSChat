@@ -1,0 +1,136 @@
+<!doctype html>
+<html ng-app="ISSChatApp">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Space</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+    <script src="js/controller.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0-beta.2/angular-sanitize.js" charset="utf-8"></script>
+    
+  </head>
+  <body>
+    <div class="container" ng-controller="ChatController">
+
+    <div class="wrapper" >
+      
+      
+      <header>
+        {% if user == '' %}
+        <h1>Login</h1>
+        <form method="POST" action="/login">
+          <p>Username: <br>
+            <input type="text" name="username" ng-model="name" placeholder="Username" size="14" /></p>
+          <p>Password: <br>
+            <input type="password" name="password" ng-model="password" placeholder="Password" size="14" /></p>
+            
+            <input type="submit"  value="Login" >
+        </form>
+        <a href="/signup">Need an account? Register here</a>
+        {% else %}
+        <h1>Chat</h1>
+        <!--p>Live chat the live feed</p-->
+          <p>Hello, {{user}}.   
+          <button onclick="location.href='/logout'">
+             Logout</button> </p> 
+        
+         <div class="scroll" id="msgpane">
+         <p ng-repeat="msg in messages">
+                <b ng-bind="msg.name"></b>:&nbsp;
+                <span ng-bind="msg.text"></span>
+         </p>
+         
+         
+         </div>
+         
+         <form ng-submit="send()">
+              
+            <input type="text" ng-model="text" size="30"  placeholder="..">
+            <input type="submit"  value="Send" >
+             
+         </form>
+         
+         <br>
+         <form ng-submit="search()">
+              
+            <input type="text" ng-model="term" size="30"  placeholder="..">
+            <input type="submit"  value="Search" >
+             
+         </form>
+         
+         <div class="scroll" id="searchpane">
+         <p ng-repeat="rslt in searchResults">
+                <b ng-bind="rslt.name"></b>:&nbsp;
+                <span ng-bind="rslt.text"></span>
+         </p>
+         
+         
+         </div>
+         
+      {% endif %}
+      </header>
+      {% if user != '' %}
+      <section>
+        <form ng-submit="newRoom()">
+          <input type="text" ng-model="roomName" size="15", placeholder="New Room">
+          <input type="submit"  value="Create Room" >
+        </form>
+      </section>
+      <section>
+        <div style="float:left">
+          <p>Join one of your subscribed rooms:</p>
+          <ul>
+            <li ng-repeat="sub in subscriptions">
+              <a href="#!" id="clickRoom" ng-click="joinRoom(sub)">
+                <b ng-bind="sub"></b>
+              </a>
+            </li>
+          </ul>
+        </div>
+        
+        <div style="float:right">
+          <p>List of rooms (click to subscribe):</p>
+          <ul>
+          <li ng-repeat="room in rooms">
+            <!--div ng-bind-html="room"></div-->
+            <a href="#!" id="subRoom" ng-click="subscribe(room)">
+              <b ng-bind="room"></b>
+            </a>
+          </li>
+          </ul>
+        </div>
+      </section>
+      {% endif %}
+      
+      
+      <section>
+        <h1>ISS Live</h1>
+            <iframe width="480" height="264" 
+            src="https://www.ustream.tv/embed/9408562?ub=ff3d23&amp;lc=ff3d23&amp;oc=ffffff&amp;uc=ffffff&amp;html5ui=1" 
+            allowfullscreen="true" webkitallowfullscreen="true" scrolling="no" frameborder="0" style="border: 0px none transparent;">    
+            </iframe>
+
+         <br />
+
+        <h2>Earth Viewing Experiment</h2>
+
+        <iframe width="480" height="270" 
+        src="https://www.ustream.tv/embed/17074538?html5ui=1" 
+        allowfullscreen="true" webkitallowfullscreen="true" scrolling="no" frameborder="0" style="border: 0px none transparent;">    
+        </iframe>
+
+
+        <p>International Space Station Live Feed</p>
+
+        
+      
+    </div>
+    <script src="js/scale.fix.js"></script>
+    </div>
+  </body>
+</html>
